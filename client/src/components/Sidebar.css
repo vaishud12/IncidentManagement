@@ -1,0 +1,113 @@
+/* Default Styles */
+.sidebar {
+    /* width: 4.2rem; Default collapsed width */
+    height: calc(100vh - 40px); /* Full height minus Navbar height */
+    background-color: white;
+    color: blue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    transition: width 0.3s; /* Smooth transition for width change */
+    position: fixed;
+    top: 50px; /* Positioning below the Navbar */
+    left: 0;
+    overflow: hidden;
+    border-right: 1px solid #ddd;
+    z-index: 1000; /* Ensure sidebar is above other content */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow for separation */
+}
+
+.sidebar.expanded {
+    width: 13rem; /* Wider width for expanded state */
+}
+
+/* Toggle button styling */
+.toggle-button {
+    margin: 10px;
+    padding: 10px;
+    background-color: #e0e0e0;
+    color: blue;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: center;
+    width: 100%;
+}
+
+/* Menu items styling */
+.menu-items {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.menu-item {
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: blue;
+    transition: background-color 0.2s;
+}
+
+.menu-item:hover {
+    background-color: #f0f0f0;
+}
+
+.menu-item svg {
+    font-size: 1.5rem;
+    margin-right: 10px;
+    color: rgb(77, 77, 224);
+}
+
+.menu-text {
+    margin-left: 10px;
+    color: blue;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.sidebar .menu-text {
+    opacity: 0;
+}
+
+.sidebar.expanded .menu-text {
+    opacity: 1;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .sidebar {
+        /* width: 1rem; Narrower width for smaller screens when collapsed */
+    }
+
+    /* .sidebar.expanded {
+        width: 10rem; /* Wider width for expanded state on smaller screens */
+
+
+    .menu-text {
+        display: none; /* Hide text in collapsed state on smaller screens */
+    }
+
+    .sidebar.expanded .menu-text {
+        display: inline; /* Show text in expanded state on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 2.5rem; /* Even narrower width for very small screens when collapsed */
+    }
+
+    .sidebar.expanded {
+        width: 8rem; /* Wider width for expanded state on very small screens */
+    }
+
+    .menu-text {
+        display: none; /* Hide text in collapsed state on very small screens */
+    }
+
+    .sidebar.expanded .menu-text {
+        display: inline; /* Show text in expanded state on very small screens */
+    }
+}

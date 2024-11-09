@@ -1,0 +1,121 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins");
+
+
+.table-wrapper {
+  overflow-x: auto; /* Allows horizontal scrolling */
+  display: block;
+ 
+  width: 100%;
+  max-width: 100%;
+}
+.table-wrappera {
+  overflow-x: auto; /* Allows horizontal scrolling */
+  display: block;
+  overflow-y: hidden; 
+  width: 100%;
+ 
+  max-width: 100%;
+}
+.styled-tabler {
+  border-collapse: collapse;
+  font-size: 0.8em;
+  font-family: "Poppins", sans-serif;
+  width: 100%;
+  table-layout: auto; /* This allows the table to automatically adjust column widths */
+  min-width: 1200px; /* Set a minimum width to trigger horizontal scrolling */
+  box-shadow: 0 17px rgba(1, 119, 237, 0.805);
+}
+
+
+.styled-tabler thead tr {
+  background-color: #3386ff;
+  color: #ffffff;
+  text-align: left;
+}
+
+.styled-tabler th,
+.styled-tabler td {
+  padding: 8px 8px;
+  word-wrap: break-word; /* Ensures long words break and do not cause overflow */
+}
+
+
+.styled-tabler tbody tr {
+  border-bottom: 1px solid #4f8dd8;
+}
+.styled-tabler tbody tr:nth-of-type(even) {
+  background-color: #cddfe4;
+}
+.styled-tabler tbody tr:last-of-type {
+  border-bottom: 2px solid #058daf;
+}
+.btn {
+  font-family: "Poppins";
+  border: none;
+  color: rgb(255, 255, 255);
+  padding: 5px 4px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 5px;
+  font-size: 12px;
+  margin: 2px 4px;
+  cursor: pointer;
+}
+.btn-edit {
+  background-color: #3386ff;
+  opacity: 75;
+}
+.btn-delete {
+  background-color: #57a5e6;
+}
+.btn-view {
+  background-color: #4987f2;
+  color: black;
+}
+.btn-contact {
+  background-color: #3385ffdf;
+  margin-bottom: 10px;
+
+}
+.pagination {
+  display: inline-block;
+}
+
+.pagination button {
+  font-family: "Poppins";
+  padding: 3px 5px; /* Smaller padding */
+  margin: 0 2px;
+  border: 1px solid #ddd;
+  background-color: #3386ff;
+  color: white;
+  cursor: pointer;
+  font-size: 9px; /* Smaller font size */
+  border-radius: 3px;
+}
+
+.pagination button.active {
+  background-color: #4caf50; /* Active page color */
+  border-color: #4caf50;
+}
+
+.pagination button:disabled {
+  background-color: #cccccc; /* Disabled button style */
+  cursor: not-allowed;
+  color: #666666;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #0056b3; /* Slight hover effect */
+}
+
+.pagination button svg {
+  font-size: 12px; /* Smaller arrow icons */
+}
+
+.pagination button:disabled {
+  opacity: 0.5; /* Reduce opacity for disabled buttons */
+}
+.main-content {
+  padding-top: 50px; /* Same height as your fixed navbar */
+}

@@ -1,0 +1,180 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins");
+
+.table-wrapper {
+  overflow-x: auto; /* Enables horizontal scrolling on smaller screens */
+  overflow-y: auto; /* Enables vertical scrolling if needed */
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin-top: 10px; /* Reduce space above the table */
+  max-height: 60vh; /* Limits the height to ensure visibility */
+}
+
+.styled-table {
+  border-collapse: collapse;
+  font-size: 0.8em;
+  font-family: "Poppins", sans-serif;
+  width: 100%;
+  table-layout: auto; /* Adjusted to auto for better content fitting */
+  min-width: 100%; /* Ensure the table fits within the wrapper */
+  box-shadow: 0 17px rgba(1, 119, 237, 0.805);
+  word-wrap: break-word; /* Break long text within cells */
+  overflow: hidden; /* Prevent content overflow */
+}
+
+.styled-table thead tr {
+  background-color: #3386ff;
+  color: #ffffff;
+  text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 8px;
+  word-wrap: break-word; /* Ensure long words break into the next line */
+  overflow: hidden; /* Prevent content overflow */
+  text-overflow: ellipsis; /* Add ellipsis (...) for text overflow */
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #4f8dd8;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #cddfe4;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #058daf;
+}
+
+/* Buttons styling */
+.btn {
+  font-family: "Poppins";
+  border: none;
+  color: rgb(255, 255, 255);
+  padding: 5px 4px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 5px;
+  font-size: 12px;
+  margin: 2px 4px;
+  cursor: pointer;
+}
+
+.btn-edit {
+  background-color: #3386ff;
+  opacity: 0.75;
+}
+
+.btn-delete {
+  background-color: #57a5e6;
+}
+
+.btn-view {
+  background-color: #4987f2;
+  color: black;
+}
+
+.btn-contact {
+  background-color: #3385ffdf;
+  margin-bottom: 10px;
+}
+
+/* Pagination styles */
+.pagination {
+  display: inline-block;
+  white-space: nowrap; /* Ensure buttons stay on one line */
+  overflow-x: auto; /* Add horizontal scrolling for small screens */
+}
+
+.pagination button {
+  font-family: "Poppins";
+  padding: 3px 5px;
+  margin: 0 2px;
+  border: 1px solid #ddd;
+  background-color: #3386ff;
+  color: white;
+  cursor: pointer;
+  font-size: 9px;
+  border-radius: 3px;
+  min-width: 30px; /* Fixed min-width to prevent buttons from widening */
+}
+
+.pagination button.active {
+  background-color: #4caf50;
+  border-color: #4caf50;
+}
+
+.pagination button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  color: #666666;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.pagination button svg {
+  font-size: 12px;
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 823px) {
+  .table-wrapper {
+    margin-top: 4px;
+    max-height: 40vh; /* Ensure table is visible */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: auto; /* Enable horizontal scrolling */
+  }
+
+  .styled-table {
+    font-size: 0.8em;
+    table-layout: auto;
+  }
+
+  .pagination {
+    white-space: nowrap; /* Ensure buttons stay on one line */
+    overflow-x: auto; /* Ensure pagination is scrollable on smaller screens */
+  }
+
+  .pagination button {
+    font-size: 7px;
+    padding: 2px 4px;
+    margin: 0 1px;
+    min-width: 25px; /* Set a smaller width to prevent button widening */
+  }
+}
+
+/* Further adjustments for very small screens */
+@media (max-width: 480px) {
+  .table-wrapper {
+    margin-top: 5px;
+    max-height: 30vh; /* Adjust max height for very small screens */
+    overflow-y: auto; /* Enables vertical scrolling */
+    overflow-x: auto; /* Enables horizontal scrolling */
+  }
+
+  .styled-table {
+    font-size: 0.7em;
+    table-layout: auto;
+  }
+
+  .pagination {
+    white-space: nowrap; /* Ensure buttons stay on one line */
+    overflow-x: auto; /* Ensure pagination is scrollable */
+  }
+
+  .pagination button {
+    font-size: 5px;
+    padding: 1px 2px;
+    margin: 0 1px;
+    min-width: 20px; /* Smaller width for mobile screens */
+  }
+
+  .styled-table th, .styled-table td {
+    padding: 6px; /* Reduce padding for small screens */
+  }
+}

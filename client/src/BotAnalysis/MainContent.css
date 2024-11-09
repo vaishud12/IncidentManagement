@@ -1,0 +1,33 @@
+/* Sidebar and Main Content */
+.sidebar {
+    width: 4rem;
+    transition: width 0.3s ease;
+}
+
+.sidebar.expanded {
+    width: 10rem; /* Expanded sidebar width */
+}
+
+.main-content {
+    margin-left: 4rem;
+    transition: margin-left 0.3s ease;
+    padding: 1rem;
+    background-color: #f4f4f4;
+    flex: 1;
+    overflow: auto;
+}
+
+.sidebar.expanded ~ .main-content {
+    margin-left: 10rem; /* Adjust main content margin when the sidebar expands */
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+    }
+
+    .sidebar {
+        width: 100%; /* Full-width sidebar for mobile */
+    }
+}

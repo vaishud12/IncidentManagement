@@ -1,0 +1,240 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins");
+
+.table-wrapper {
+  overflow-x: auto; /* Allows horizontal scrolling */
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+.styled-table {
+  border-collapse: collapse;
+  font-size: 0.8em;
+  font-family: "Poppins", sans-serif;
+  width: 100%;
+  table-layout: auto; /* This allows the table to automatically adjust column widths */
+  min-width: 600px; /* Minimum width to trigger horizontal scrolling */
+  box-shadow: 0 17px rgba(1, 119, 237, 0.805);
+}
+
+.styled-table thead tr {
+  background-color: #3386ff;
+  color: #ffffff;
+  text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 8px 8px;
+  word-wrap: break-word; /* Ensures long words break and do not cause overflow */
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #4f8dd8;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #cddfe4;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #058daf;
+}
+
+.btn {
+  font-family: "Poppins";
+  border: none;
+  color: rgb(255, 255, 255);
+  padding: 5px 4px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 5px;
+  font-size: 12px;
+  margin: 2px 4px;
+  cursor: pointer;
+}
+
+.btn-edit {
+  background-color: #3386ff;
+  opacity: 75;
+}
+
+.btn-delete {
+  background-color: #57a5e6;
+}
+
+.btn-view {
+  background-color: #4987f2;
+  color: black;
+}
+
+.btn-contact {
+  background-color: #3385ffdf;
+  margin-bottom: 10px;
+}
+.modal-overlay {
+  position: fixed; /* Stays in place while scrolling */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full width of the viewport */
+  height: 100vh; /* Full height of the viewport */
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex; /* Center the modal content */
+  align-items: center;
+  justify-content: center;
+ 
+  z-index: 1000; /* Ensure it's on top of other content */
+}
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Styles for the modal content */
+.modal-content {
+  background: #fff; /* White background for the modal */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Padding around the content */
+  max-width: 80vw; /* Maximum width of the modal */
+  max-height: 80vh; /* Maximum height of the modal */
+  overflow:auto; /* Allow scrolling if content exceeds the max height */
+  position: relative;
+}
+
+/* Media Queries for Responsive Design */
+
+/* Extra Small Devices (phones, less than 576px) */
+@media (max-width: 575.98px) {
+  .styled-table {
+    font-size: 0.6em; /* Smaller font size for smaller screens */
+  }
+
+  .styled-table th,
+  .styled-table td {
+    padding: 4px 4px; /* Reduced padding for smaller screens */
+  }
+}
+
+/* Small Devices (tablets, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .styled-table {
+    font-size: 0.7em; /* Adjust font size */
+  }
+
+  .styled-table th,
+  .styled-table td {
+    padding: 6px 6px; /* Moderate padding */
+  }
+}
+
+/* Medium Devices (desktops, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .styled-table {
+    font-size: 0.8em; /* Default font size */
+  }
+
+  .styled-table th,
+  .styled-table td {
+    padding: 8px 8px; /* Default padding */
+  }
+}
+
+/* Large Devices (large desktops, 992px and up) */
+@media (min-width: 992px) {
+  .styled-table {
+    font-size: 0.9em; /* Slightly larger font for larger screens */
+  }
+
+  .styled-table th,
+  .styled-table td {
+    padding: 10px 10px; /* More padding for larger screens */
+  }
+}
+@media (max-width: 768px) {
+  .admin-containerr {
+      padding: 10px; /* Add some padding for smaller screens */
+  }
+
+  .tag-select,
+  .admin-containerr input {
+      width: 100%; /* Full width on smaller screens */
+  }
+  
+  button {
+      width: 100%; /* Full width buttons on smaller screens */
+  }
+}
+.priority-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+.priority-form {
+  width: 100%;
+  max-width: 1000px;
+}
+
+.priority-heading {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.priority-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.priority-input-wrapper {
+  flex: 1 1 auto; /* Allow input fields to grow */
+  min-width: 150px; /* Minimum width for smaller screens */
+}
+
+.priority-label {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  font-family: Poppins;
+  margin-bottom: 8px;
+}
+
+.priority-input {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 12px;
+}
+
+.priority-button {
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 80%;
+  max-width: 150px;
+  margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+  .priority-inputs {
+      flex-direction: column; /* Stack vertically on small screens */
+  }
+}

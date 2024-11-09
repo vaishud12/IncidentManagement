@@ -1,0 +1,73 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@canvasjs/react-charts": "^1.0.2",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^6.1.3",
+    "@mui/material": "^6.1.3",
+    "@react-google-maps/api": "^2.19.3",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.7",
+    "chart.js": "^4.4.4",
+    "crypto-browserify": "^3.12.0",
+    "framer-motion": "^11.9.0",
+    "i18next": "^23.15.1",
+    "jwt-decode": "^4.0.0",
+    "leaflet": "^1.9.4",
+    "leaflet-fullscreen": "^1.0.2",
+    "lucide-react": "^0.441.0",
+    "maplibre-gl": "^4.7.1",
+    "nodemailer": "^6.9.13",
+    "quill": "^2.0.2",
+    "react": "^18.3.1",
+    "react-awesome-reveal": "^4.2.14",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.3.1",
+    "react-i18next": "^15.0.2",
+    "react-icons": "^5.3.0",
+    "react-leaflet": "^4.2.1",
+    "react-quill": "^2.0.0",
+    "react-router-dom": "^6.22.3",
+    "react-scripts": "5.0.1",
+    "react-social-icons": "^6.18.0",
+    "react-tag-autocomplete": "^7.3.0",
+    "react-tag-input": "^6.10.3",
+    "react-toastify": "^10.0.5",
+    "sanitize-html": "^2.13.0",
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
+  },
+  "scripts": {
+    "start": "cross-env PORT=3017 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "tailwindcss": "^3.4.3"
+  }
+}

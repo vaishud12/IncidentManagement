@@ -1,0 +1,42 @@
+/* .tag-input-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 15px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.tag-remove-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.tag-remove-button:hover {
+  color: #ff0000;
+}
+
+.tag-input {
+  border: none;
+  outline: none;
+  padding: 5px;
+  font-size: 14px;
+  flex-grow: 1;
+  min-width: 100px; /* Ensures the input has a minimum width */
+
+
