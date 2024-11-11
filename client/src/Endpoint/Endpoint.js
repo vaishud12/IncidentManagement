@@ -40,6 +40,11 @@ export const UPDATE_SPECIFIC_INFORMATION_MASTER = (informationmasterid) =>
 export const DELETE_INFORMATION_MASTER = (informationmasterid) =>
   `${BASE_URL}informationmasterdelete/${informationmasterid}`;
 
+export const GET_SECTOR_CATEGORY_DATA = `${BASE_URL}information`;
+
+
+
+
 /********************INCIDENT************************** */
 export const POST_INCIDENT = `${BASE_URL}incidentpost`;
 export const UPLOAD_MASTER_IMAGE = `${BASE_URL}upload-masterimage`;

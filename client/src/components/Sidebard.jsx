@@ -19,23 +19,24 @@ export default function Sidebard({ setExpanded, onMenuItemClick }) {
     };
 
     // Fetch sectors from the database
-    useEffect(() => {
-        const fetchSectors = async () => {
-            try {
-                const response = await fetch(API.GET_DISTINCT_SECTOR);
-                if (!response.ok) throw new Error("Network response was not ok");
-                const data = await response.json();
-                setSectors(data); // Assume data is an array of sector objects
-            } catch (error) {
-                console.error("Error fetching sectors:", error);
-                setError(error.message); // Set the error message
-            } finally {
-                setLoading(false); // Stop loading regardless of success or failure
-            }
-        };
+    // Fetching from the API, assuming the endpoint returns distinct sectors
+useEffect(() => {
+    const fetchSectors = async () => {
+        try {
+            const response = await fetch(API.GET_DISTINCT_SECTOR);
+            if (!response.ok) throw new Error("Network response was not ok");
+            const data = await response.json();
+            setSectors(data);  // This should now contain only distinct sector names
+        } catch (error) {
+            console.error("Error fetching sectors:", error);
+            setError(error.message);  // Set the error message
+        } finally {
+            setLoading(false);  // Stop loading regardless of success or failure
+        }
+    };
+    fetchSectors();
+}, []);
 
-        fetchSectors();
-    }, []);
 
     return (
         <aside

@@ -766,6 +766,33 @@ app.get("/citincident-api/agroincidentdescriptiongets", (req, res) => {
         res.json(result.rows);
     });
 });
+
+// Assuming you are using Express for backend
+
+// Endpoint to fetch data based on sector and category
+app.get('/citincident-api/information', async (req, res) => {
+    const { category, sectorName } = req.query; // Get the category and sectorName from query params
+
+    try {
+        const query = `
+            SELECT incidentname, informationdescription, tagss, city 
+            FROM informationmaster 
+            WHERE incidentcategory = $1 AND sector = $2
+        `;
+        const result = await db.query(query, [category, sectorName]);
+
+        if (result.rows.length > 0) {
+            res.json(result.rows); // Return all matching results for the category and sector
+        } else {
+            res.status(404).json({ message: 'No information found for this category and sector' });
+        }
+    } catch (err) {
+        console.error('Error fetching information data:', err);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+
 //information master 
 app.get("/citincident-api/informationmastergets", (req, res) => {
     const sqlGet = "SELECT * FROM informationmaster";

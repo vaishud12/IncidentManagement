@@ -10,7 +10,7 @@ import InformationMaster from './InformationMaster';
 
 const Dashboard = () => {
     const [sidebarExpanded, setSidebarExpanded] = useState(true);
-    const [visibleComponent, setVisibleComponent] = useState('Home'); // Default to Home section
+    const [visibleComponent, setVisibleComponent] =  useState('Home');// Default to Home section
 
     const handleSectorClick = (sectorName) => {
         console.log("Selected Sector:", sectorName);
@@ -22,10 +22,31 @@ const Dashboard = () => {
         switch (visibleComponent) {
             case 'POSH - Prevention of Sexual Harassment':
                 return <Posh sectorName={visibleComponent} />;
-            case 'CRFT - Cryptocurrency Fraud and Threats':
-                    return <Crft sectorName={visibleComponent} />;
+
+            case 'INTS – International Scam Scenarios':
+                return <Posh sectorName={visibleComponent} />;
+
+            case 'OMFR – Online Marketplace Fraud Risks':
+                return <Posh sectorName={visibleComponent} />;
+            
+            case 'CCFD – Charity and Crowdfunding Deception':
+                return <Posh sectorName={visibleComponent} />;
+                
+            case 'CIST – Cyber and Identity Support Threats':
+                return <Posh sectorName={visibleComponent} />;
+
+            case 'SISP - Social Influence and Scam Prevention':
+                return <Posh sectorName={visibleComponent} />;
+            
+            case 'CDST – Courier and Delivery Scam Threats':
+                return <Posh sectorName={visibleComponent} />;
+
+            case 'CRFT – Cryptocurrency Fraud and Threats':
+                
+                return <Crft sectorName={visibleComponent} />;
+
             case 'Home':
-                return <InformationMaster />; // Render InformationMaster for Home
+                return <InformationMaster />;
             default:
                 return <div>Select a sector to view details.</div>;
         }
