@@ -5,7 +5,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, Title, Tool
 import * as API from "../Endpoint/Endpoint";
 ChartJS.register(CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
 
-const Posh = ({ sectorName }) => {
+const Cist = ({ sectorName }) => {
     const [totalIncidents, setTotalIncidents] = useState(0);
     const [totalResolutions, setTotalResolutions] = useState(0); // State for total resolutions
     const [incidents, setIncidents] = useState([]); // State to hold all incidents
@@ -232,7 +232,7 @@ console.log('information data',informationData); // Log to check the structure o
                           <iframe
                               width="100%"
                               height="300"
-                              src="https://www.youtube.com/embed/OhNA3INl5oM?si=78xxr4xTZIrfBZa8"
+                              src="https://www.youtube.com/embed/3t9AEkQXTvU?si=mDaOYDIFoipR4OwW"
                               title="YouTube video player"
                               frameBorder="0"
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -244,7 +244,8 @@ console.log('information data',informationData); // Log to check the structure o
                       {/* Description Section */}
                       <div className="flex-1">
                           <p className="text-gray-700">
-                              Cryptocurrency Fraud and Threats (CRFT) refer to the various scams and security risks in the digital currency space, such as Ponzi schemes, phishing attacks, fake ICOs, rug pulls, and SIM swap attacks. As the popularity of cryptocurrencies grows, so do the tactics used by malicious actors to exploit vulnerabilities. These threats can lead to significant financial losses, damage to reputations, and increased regulatory scrutiny. To mitigate the risks, it is crucial for investors to remain vigilant, utilize secure wallets, enable two-factor authentication, and stay informed about potential scams and emerging threats in the cryptocurrency market.
+                          
+                          Cyber and Identity Support Threats (CIST) involve fraudsters posing as tech support, customer service, or cybersecurity professionals to gain access to victims’ sensitive information. Common tactics include phishing emails, fake software updates, or pop-up messages warning of security issues. Scammers convince victims to disclose personal information or download malicious software, leading to identity theft or unauthorized access to financial accounts. The consequences can be severe, with victims facing compromised financial security and long-term identity management issues.
                           </p>
                       </div>
                   </div>
@@ -481,4 +482,4 @@ console.log('information data',informationData); // Log to check the structure o
     );
 };
 
-export default Posh;
+export default Cist;

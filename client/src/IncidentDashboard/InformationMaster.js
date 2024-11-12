@@ -264,7 +264,7 @@ const InformationMaster = () => {
                                 <th>Incident Category</th>
                                 <th>Incident Name</th>
                               
-                               <th>City</th>
+                               <th>City/Country</th>
                                <th>Tags</th>
                                <th>Information Type</th>
                                 <th>Information Description</th>

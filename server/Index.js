@@ -792,6 +792,40 @@ app.get('/citincident-api/information', async (req, res) => {
     }
 });
 
+//graph
+app.get('/citincident-api/incidentsresolvedchart', async (req, res) => {
+    const { sectorName } = req.query; // Extract sectorName from query parameters
+
+    if (!sectorName) {
+        return res.status(400).json({ error: 'Sector name is required' });
+    }
+
+    try {
+        const query = `
+            SELECT incidentcategory, 
+                   COUNT(*) FILTER (WHERE resolved = true) AS resolved_count, 
+                   COUNT(*) FILTER (WHERE resolved = false) AS unresolved_count
+            FROM incident
+            WHERE sector = $1
+            GROUP BY incidentcategory;
+        `;
+
+        const result = await db.query(query, [sectorName]);
+
+        const incidents = result.rows.map(row => ({
+            incidentcategory: row.incidentcategory,
+            resolved_count: row.resolved_count,
+            unresolved_count: row.unresolved_count,
+        }));
+
+        res.json(incidents);
+    } catch (error) {
+        console.error('Error fetching incidents:', error);
+        res.status(500).json({ error: 'Failed to fetch incidents' });
+    }
+});
+
+
 
 //information master 
 app.get("/citincident-api/informationmastergets", (req, res) => {

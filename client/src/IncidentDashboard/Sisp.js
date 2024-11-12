@@ -5,7 +5,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, Title, Tool
 import * as API from "../Endpoint/Endpoint";
 ChartJS.register(CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
 
-const Posh = ({ sectorName }) => {
+const Sisp = ({ sectorName }) => {
     const [totalIncidents, setTotalIncidents] = useState(0);
     const [totalResolutions, setTotalResolutions] = useState(0); // State for total resolutions
     const [incidents, setIncidents] = useState([]); // State to hold all incidents
@@ -232,7 +232,7 @@ console.log('information data',informationData); // Log to check the structure o
                           <iframe
                               width="100%"
                               height="300"
-                              src="https://www.youtube.com/embed/OhNA3INl5oM?si=78xxr4xTZIrfBZa8"
+                              src="https://www.youtube.com/embed/qsf22Yk51zg?si=nfyV2dazh5vhjZ_i"
                               title="YouTube video player"
                               frameBorder="0"
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -244,7 +244,7 @@ console.log('information data',informationData); // Log to check the structure o
                       {/* Description Section */}
                       <div className="flex-1">
                           <p className="text-gray-700">
-                              Cryptocurrency Fraud and Threats (CRFT) refer to the various scams and security risks in the digital currency space, such as Ponzi schemes, phishing attacks, fake ICOs, rug pulls, and SIM swap attacks. As the popularity of cryptocurrencies grows, so do the tactics used by malicious actors to exploit vulnerabilities. These threats can lead to significant financial losses, damage to reputations, and increased regulatory scrutiny. To mitigate the risks, it is crucial for investors to remain vigilant, utilize secure wallets, enable two-factor authentication, and stay informed about potential scams and emerging threats in the cryptocurrency market.
+                          Social Influence and Scam Prevention (SISP) addresses the psychological strategies scammers use to manipulate people, such as urgency, authority, and emotional appeals. These tactics are designed to create a sense of pressure or trust, leading individuals to act against their better judgment. SISP emphasizes education and awareness to help individuals recognize these manipulative signs, empowering them to question suspicious interactions and reduce their susceptibility to scams across various platforms, from social media to email.
                           </p>
                       </div>
                   </div>
@@ -481,4 +481,4 @@ console.log('information data',informationData); // Log to check the structure o
     );
 };
 
-export default Posh;
+export default Sisp;

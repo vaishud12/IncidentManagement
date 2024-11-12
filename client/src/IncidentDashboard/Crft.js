@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react'; // Ensure useState and useEffect are imported
-
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { Scatter } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend } from 'chart.js';
 import * as API from "../Endpoint/Endpoint";
+ChartJS.register(CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
+
 const Crft = ({ sectorName }) => {
     const [totalIncidents, setTotalIncidents] = useState(0);
     const [totalResolutions, setTotalResolutions] = useState(0); // State for total resolutions
@@ -9,6 +13,30 @@ const Crft = ({ sectorName }) => {
     const [informationData, setInformationData] = useState(null); // New state for information data
     const [renderData, setRenderData] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [chartData, setChartData] = useState(null);
+    const incidentsPerPage = 3;
+   
+    // Calculate the indices for slicing the incidents array
+    const indexOfLastIncident = currentPage * incidentsPerPage;
+    const indexOfFirstIncident = indexOfLastIncident - incidentsPerPage;
+    const currentIncidents = incidents.slice(indexOfFirstIncident, indexOfLastIncident);
+
+    // Determine the total number of pages
+    const totalPages = Math.ceil(incidents.length / incidentsPerPage);
+
+    // Handler functions for pagination
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage((prev) => prev + 1);
+        }
+    };
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage((prev) => prev - 1);
+        }
+    };
 
     const notifications = [
         { id: 1, message: "Incident #1025 is resolved.", date: "2024-11-07" },
@@ -93,12 +121,75 @@ const handleCategoryClick = (category) => {
     fetchInformationData(category); // Fetch the data for that category
 };
 
+const fetchIncidentDatac = async (sectorName) => {
+  if (!sectorName) {
+      console.error('Sector name is missing');
+      return;
+  }
+
+  try {
+      const response = await fetch(`${API.GET_INCIDENTRESOLVED_CHART}?sectorName=${sectorName}`);
+      
+      if (!response.ok) {
+          throw new Error('Failed to fetch data');
+      }
+
+      const data = await response.json();
+
+      console.log('Fetched data:', data);
+
+      if (Array.isArray(data)) {
+          const resolvedData = data.map(item => ({
+              x: item.incidentcategory,
+              y: item.resolved_count,
+              category: item.incidentcategory
+          }));
+
+          const unresolvedData = data.map(item => ({
+              x: item.incidentcategory,
+              y: item.unresolved_count,
+              category: item.incidentcategory
+          }));
+
+          setChartData({
+              datasets: [
+                  {
+                      label: 'Resolved Incidents',
+                      data: resolvedData,
+                      backgroundColor: 'rgba(0, 255, 0, 0.6)',
+                      borderColor: 'rgba(0, 255, 0, 1)',
+                      borderWidth: 1
+                  },
+                  {
+                      label: 'Unresolved Incidents',
+                      data: unresolvedData,
+                      backgroundColor: 'rgba(255, 0, 0, 0.6)',
+                      borderColor: 'rgba(255, 0, 0, 1)',
+                      borderWidth: 1
+                  }
+              ]
+          });
+      } else {
+          console.error('Data is not an array:', data);
+      }
+
+  } catch (error) {
+      console.error('Error fetching chart data:', error);
+  }
+};
+
+
+
+
+
+
 // useEffect to fetch data when the component mounts or sectorName changes
 useEffect(() => {
     fetchIncidentCount();
     fetchResolutionCount();
     fetchIncidents();
     fetchIncidentCategories();
+    fetchIncidentDatac();
 }, [sectorName]);  // Effect will run when sectorName changes
 useEffect(() => {
     if (informationData) {
@@ -107,126 +198,140 @@ useEffect(() => {
     }
   }, [informationData]);
 
+
+useEffect(() => {
+    if (sectorName) {
+        fetchIncidentDatac(sectorName);
+    }
+}, [sectorName]);  // Trigger the fetch when sectorName changes
+
+  if (!chartData) return <p>Loading chart...</p>;
 console.log('information data',informationData); // Log to check the structure of the data
 
     return (
-        <div className="sector-page">
-            <p>Welcome to the {sectorName} sector page!</p>
-            <div className="p-6">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-    <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">Total Incidents</h2>
-        <p className="text-3xl font-bold text-center">{totalIncidents}</p>
-    </div>
-    <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">Total Resolutions</h2>
-        <p className="text-3xl font-bold text-center">{totalResolutions}</p>
-    </div>
-
-    {/* Video Information Section */}
-    <div className="bg-white p-6 rounded-lg shadow-lg mt-6 col-span-1 md:col-span-2"> {/* Make it span both columns */}
-        <h2 className="text-xl font-semibold mb-4">Video Information</h2>
-        <div className="flex flex-col md:flex-row md:space-x-6"> {/* Use flexbox for layout */}
-            {/* Video Section */}
-            <div className="flex-1">
-            <iframe width="560" style={{height:'300px'}} src="https://www.youtube.com/embed/OhNA3INl5oM?si=78xxr4xTZIrfBZa8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
-
-            {/* Description Section */}
-            <div className="flex-1">
-                <p className="text-gray-700">
-                Cryptocurrency Fraud and Threats (CRFT) refer to the various scams and security risks in the digital currency space, such as Ponzi schemes, phishing attacks, fake ICOs, rug pulls, and SIM swap attacks. As the popularity of cryptocurrencies grows, so do the tactics used by malicious actors to exploit vulnerabilities. These threats can lead to significant financial losses, damage to reputations, and increased regulatory scrutiny. To mitigate the risks, it is crucial for investors to remain vigilant, utilize secure wallets, enable two-factor authentication, and stay informed about potential scams and emerging threats in the cryptocurrency market.
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-    {/* New Video Section */}
-    
-</div>
-
-<div className="flex">
-      {/* Incident Categories */}
-      <div className="w-1/2">
-        <h2 className="text-2xl font-bold mb-4">Incident Categories for {sectorName}</h2>
-        {categories.length > 0 ? (
-          <ul className="list-disc list-inside">
-            {categories.map((category, index) => (
-              <li
-                key={index}
-                className="py-2 px-4 border-b hover:bg-gray-100 cursor-pointer"
-                onClick={() => handleCategoryClick(category)}
-              >
-                {category}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-center text-gray-500">No incident categories found for this sector.</p>
-        )}
+      <div className="sector-page">
+      <p>Welcome to the {sectorName} sector page!</p>
+      
+      <div className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div className="bg-white p-6 rounded-lg shadow-lg">
+                  <h2 className="text-xl font-semibold mb-4">Total Incidents</h2>
+                  <p className="text-3xl font-bold text-center">{totalIncidents}</p>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-lg">
+                  <h2 className="text-xl font-semibold mb-4">Total Resolutions</h2>
+                  <p className="text-3xl font-bold text-center">{totalResolutions}</p>
+              </div>
+  
+              {/* Video Information Section */}
+              <div className="bg-white p-6 rounded-lg shadow-lg mt-6 col-span-1 md:col-span-2">
+                  <h2 className="text-xl font-semibold mb-4">Video Information</h2>
+                  <div className="flex flex-col md:flex-row md:space-x-6">
+                      {/* Video Section */}
+                      <div className="flex-1 mb-4 md:mb-0">
+                          <iframe
+                              width="100%"
+                              height="300"
+                              src="https://www.youtube.com/embed/OhNA3INl5oM?si=78xxr4xTZIrfBZa8"
+                              title="YouTube video player"
+                              frameBorder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                              referrerPolicy="strict-origin-when-cross-origin"
+                              allowFullScreen
+                          ></iframe>
+                      </div>
+  
+                      {/* Description Section */}
+                      <div className="flex-1">
+                          <p className="text-gray-700">
+                              Cryptocurrency Fraud and Threats (CRFT) refer to the various scams and security risks in the digital currency space, such as Ponzi schemes, phishing attacks, fake ICOs, rug pulls, and SIM swap attacks. As the popularity of cryptocurrencies grows, so do the tactics used by malicious actors to exploit vulnerabilities. These threats can lead to significant financial losses, damage to reputations, and increased regulatory scrutiny. To mitigate the risks, it is crucial for investors to remain vigilant, utilize secure wallets, enable two-factor authentication, and stay informed about potential scams and emerging threats in the cryptocurrency market.
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </div>
       </div>
-
-      {/* Incident Information */}
-      {selectedCategory && renderData.length > 0 && (
-        <div className="w-1/2 pl-4">
-          <h3 className="text-xl font-semibold mb-4">{selectedCategory} Information</h3>
-
-          {/* Map over renderData array */}
-          {renderData.map((data, index) => (
-            <div key={index} className="mb-6">
-              <p className="text-gray-700 font-bold">
-                Incident Name: {data.incidentname || 'N/A'}
-              </p>
-              <p className="text-gray-500">City: {data.city || 'N/A'}</p>
-
-              {/* Image */}
-              {data.informationdescription?.image ? (
-                <img
-                  src={API.GET_IMAGE_URL(data.informationdescription.image)}
-                  alt={data.incidentname}
-                  className="w-full max-w-md my-4"
-                />
+  
+      {/* Incident Categories and Selected Category Info */}
+      <div className="flex flex-col md:flex-row space-y-4 md:space-y-0">
+          {/* Incident Categories */}
+          <div className="w-full md:w-1/2">
+              <h2 className="text-2xl font-bold mb-4">Incident Categories for {sectorName}</h2>
+              {categories.length > 0 ? (
+                  <ul className="list-disc list-inside">
+                      {categories.map((category, index) => (
+                          <li
+                              key={index}
+                              className="py-2 px-4 border-b hover:bg-gray-100 cursor-pointer"
+                              onClick={() => handleCategoryClick(category)}
+                          >
+                              {category}
+                          </li>
+                      ))}
+                  </ul>
               ) : (
-                <p>No image available.</p>
+                  <p className="text-center text-gray-500">No incident categories found for this sector.</p>
               )}
-
-              {/* Description */}
-              
-
-              {/* Tags */}
-              {data.tagss && data.tagss.length > 0 ? (
-                <div className="my-4">
-                  <span className="font-semibold">Tags: </span>
-                  {data.tagss.join(', ')}
-                </div>
-              ) : (
-                <p>No tags available.</p>
-              )}
-
-              <p><b>Information Description:</b>{data.informationdescription?.content ? (
-                <div
-                  className="content-text"
-                  dangerouslySetInnerHTML={{ __html: data.informationdescription.content }}
-                />
-              ) : (
-                <p>No content available.</p>
-              )}</p>{/* Content */}
-              
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-
-
-            {/* Table for displaying incidents */}
-            <div className="flex space-x-8 p-4">
-    {/* Incident Table */}
-    <div className="overflow-x-auto" style={{ width: '60%' }}>
+          </div>
+  
+          {/* Selected Category Information */}
+          {selectedCategory && renderData && renderData.length > 0 && (
+              <div className="w-full md:w-1/2 pl-0 md:pl-4">
+                  <h3 className="text-xl font-semibold mb-4">{selectedCategory} Information</h3>
+                  <div className="bg-white rounded-lg shadow-md p-4 md:p-8 max-h-[400px] md:max-h-[780px] overflow-y-auto">
+                      {renderData.map((data, index) => (
+                          <div key={index} className="mb-6 border-b pb-4">
+                              <p className="text-gray-700 font-bold">Incident Name: {data.incidentname || 'N/A'}</p>
+                              <p className="text-gray-500">City/Country: {data.city || 'N/A'}</p>
+                              {data.informationdescription?.image ? (
+                                  <img
+                                      src={API.GET_IMAGE_URL(data.informationdescription.image)}
+                                      alt={data.incidentname}
+                                      className="w-full max-w-md my-4"
+                                  />
+                              ) : (
+                                  <p>No image available.</p>
+                              )}
+                              {data.tagss && data.tagss.length > 0 ? (
+                                  <div className="my-4">
+                                      <span className="font-semibold">Tags: </span>
+                                      {data.tagss.join(', ')}
+                                  </div>
+                              ) : (
+                                  <p>No tags available.</p>
+                              )}
+                              <p>
+                                  <b>Information Description:</b>
+                                  {data.informationdescription?.content ? (
+                                      <div className="content-text">
+                                          <style>
+                                              {`
+                                                  .content-text a {
+                                                      color: blue;
+                                                      text-decoration: underline;
+                                                  }
+                                              `}
+                                          </style>
+                                          <div
+                                              dangerouslySetInnerHTML={{ __html: data.informationdescription.content }}
+                                          />
+                                      </div>
+                                  ) : (
+                                      <p>No content available.</p>
+                                  )}
+                              </p>
+                          </div>
+                      ))}
+                  </div>
+              </div>
+          )}
+      </div>
+  
+    {/* Incident Table and Notifications */}
+<div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-8 p-4">
+    <div className="overflow-x-auto w-full md:w-3/5">
         <h2 className="text-xl font-semibold mb-4 text-dark-blue">Incident List</h2>
-        <table className="min-w-full border border-gray-200 rounded-lg shadow-lg mx-auto" style={{ width: '100%' }}>
+        <table className="min-w-full border border-gray-200 rounded-lg shadow-lg">
             <thead>
                 <tr style={{ backgroundColor: '#3386ff', color: 'white' }}>
                     <th className="py-3 px-4 border-b font-bold text-left">Incident ID</th>
@@ -245,7 +350,7 @@ console.log('information data',informationData); // Log to check the structure o
                 </tr>
             </thead>
             <tbody>
-                {incidents.map((incident) => (
+                {currentIncidents.map((incident) => (
                     <tr key={incident.id} className="hover:bg-light-blue transition duration-200">
                         <td className="py-2 px-4 border-b">{incident.incidentid}</td>
                         <td className="py-2 px-4 border-b">{incident.incidentcategory}</td>
@@ -265,10 +370,10 @@ console.log('information data',informationData); // Log to check the structure o
                                 <img
                                     src={API.GET_IMAGE_URL(incident.photo)}
                                     alt={incident.incidentname}
-                                    style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '5px' }}
+                                    className="w-full max-w-xs"
                                 />
                             ) : (
-                                <p>No Image</p>
+                                <p>No photo available.</p>
                             )}
                         </td>
                         <td className="py-2 px-4 border-b">{incident.remark}</td>
@@ -276,34 +381,104 @@ console.log('information data',informationData); // Log to check the structure o
                 ))}
             </tbody>
         </table>
+
+        {/* Pagination Controls */}
+        <div className="flex justify-center items-center mt-4">
+            <button
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+                className="px-4 py-2 bg-gray-300 text-blue-500 rounded disabled:opacity-50"
+            >
+                <FaArrowLeft />
+            </button>
+            <span className="mx-4 text-dark-blue">Page {currentPage} of {totalPages}</span>
+            <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+                className="px-4 py-2 bg-gray-300 text-blue-500 rounded disabled:opacity-50"
+            >
+                <FaArrowRight />
+            </button>
+        </div>
     </div>
 
-    {/* Notification Table */}
-    <div  style={{ width: '30%' }}>
-        <h2 className="text-xl font-semibold mb-4 text-dark-blue">Notifications</h2>
-        <table className="min-w-full border border-gray-200 rounded-lg shadow-lg mx-auto" style={{ width: '100%' }}>
-            <thead>
-                <tr style={{ backgroundColor: '#3386ff', color: 'white' }}>
-                    <th className="py-3 px-4 border-b font-bold text-left">Notification ID</th>
-                    <th className="py-3 px-4 border-b font-bold text-left">Message</th>
-                    <th className="py-3 px-4 border-b font-bold text-left">Date</th>
+    <div className="bg-white p-6 rounded-lg shadow-lg w-full overflow-x-auto md:w-2/5">
+    <h2 className="text-xl font-semibold mb-4">Notifications</h2>
+    <table className="min-w-full border border-gray-200 rounded-lg shadow-lg mx-auto table-auto">
+        <thead>
+            <tr style={{ backgroundColor: '#3386ff', color: 'white' }}>
+                <th className="py-3 px-4 border-b font-bold text-left">Notification ID</th>
+                <th className="py-3 px-4 border-b font-bold text-left">Message</th>
+                <th className="py-3 px-4 border-b font-bold text-left">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {notifications.map((notification) => (
+                <tr key={notification.id} className="hover:bg-light-blue transition duration-200">
+                    <td className="py-2 px-4 border-b text-sm sm:text-base">{notification.id}</td>
+                    <td className="py-2 px-4 border-b text-sm sm:text-base break-words">{notification.message}</td>
+                    <td className="py-2 px-4 border-b text-sm sm:text-base">{new Date(notification.date).toLocaleDateString()}</td>
                 </tr>
-            </thead>
-            <tbody>
-                {notifications.map((notification) => (
-                    <tr key={notification.id} className="hover:bg-light-blue transition duration-200">
-                        <td className="py-2 px-4 border-b">{notification.id}</td>
-                        <td className="py-2 px-4 border-b">{notification.message}</td>
-                        <td className="py-2 px-4 border-b">{new Date(notification.date).toLocaleDateString()}</td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+            ))}
+        </tbody>
+    </table>
+
+    {/* Incident Resolution Scatter Graph */}
+    <div className="mt-4">
+    <h2 className="text-xl font-semibold mb-4 text-dark-blue">Incident Categories Resolved vs Unresolved</h2>
+    <div className="w-full mx-auto" style={{ height: '3000px', padding: '1px' }}> {/* Increased height */}
+        <Scatter
+            data={chartData}
+            options={{
+                responsive: true,
+                scales: {
+                    x: {
+                        type: 'category',
+                        title: {
+                            display: true,
+                            text: 'Incident Category'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Incident Count'
+                        },
+                        min: 0
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: `Incidents Resolution Data for ${sectorName}`
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                return `${tooltipItem.dataset.label}: ${tooltipItem.raw.y} incidents`;
+                            }
+                        }
+                    }
+                }
+            }}
+             // Ensures the graph takes full width and height of the container
+        />
+    </div>
+
+
     </div>
 </div>
 
-        </div>
+</div>
 
+        {/* Graph Section inside Notifications */}
+        </div>
+       
+    
+
+
+  
+  
         
     );
 };

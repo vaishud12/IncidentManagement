@@ -265,7 +265,7 @@ const InformationMasterAedit = ({ visible, onClose, editItem, loadData }) => {
                             ))}
                         </select>
                     </div>
-                    <label htmlFor="city">{t("addincident.current_address")}</label>
+                    <label htmlFor="city">City/Country</label>
                     <input
                         type="text"
                         id="city"

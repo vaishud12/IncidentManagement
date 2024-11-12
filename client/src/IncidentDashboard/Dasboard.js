@@ -7,6 +7,12 @@ import "../BotAnalysis/MainContent.css";
 import Posh from './Posh';
 import Crft from './Crft';
 import InformationMaster from './InformationMaster';
+import Cdst from './Cdst';
+import Ccfd from './Ccfd';
+import Ints from './Ints';
+import Omfr from './Omfr';
+import Cist from './Cist';
+import Sisp from './Sisp';
 
 const Dashboard = () => {
     const [sidebarExpanded, setSidebarExpanded] = useState(true);
@@ -24,22 +30,22 @@ const Dashboard = () => {
                 return <Posh sectorName={visibleComponent} />;
 
             case 'INTS – International Scam Scenarios':
-                return <Posh sectorName={visibleComponent} />;
+                return <Ints sectorName={visibleComponent} />;
 
             case 'OMFR – Online Marketplace Fraud Risks':
-                return <Posh sectorName={visibleComponent} />;
+                return <Omfr sectorName={visibleComponent} />;
             
             case 'CCFD – Charity and Crowdfunding Deception':
-                return <Posh sectorName={visibleComponent} />;
+                return <Ccfd sectorName={visibleComponent} />;
                 
             case 'CIST – Cyber and Identity Support Threats':
-                return <Posh sectorName={visibleComponent} />;
+                return <Cist sectorName={visibleComponent} />;
 
             case 'SISP - Social Influence and Scam Prevention':
-                return <Posh sectorName={visibleComponent} />;
+                return <Sisp sectorName={visibleComponent} />;
             
             case 'CDST – Courier and Delivery Scam Threats':
-                return <Posh sectorName={visibleComponent} />;
+                return <Cdst sectorName={visibleComponent} />;
 
             case 'CRFT – Cryptocurrency Fraud and Threats':
                 

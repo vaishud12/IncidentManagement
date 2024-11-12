@@ -152,3 +152,5 @@ export const GET_INCIDENTCOUNT_CATEGORYCASE =`${BASE_URL}incidents/count`;
 export const GET_RESOLUTIONCOUNT_CATEGORYCASE =`${BASE_URL}resolutions/count`;
 export const GET_INCIDENT_DETAIL_SECTOR=`${BASE_URL}incidentsd`;
 export const GET_INCIDENTCATEGORIES_SECTOR=`${BASE_URL}incidentcategoriessec`;
+export const GET_INCIDENTRESOLVED_CHART=`${BASE_URL}incidentsresolvedchart`;
+
