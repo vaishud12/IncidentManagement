@@ -26,7 +26,7 @@ const words = [
   "SISP - Social Influence and Scam Prevention",
   "CIST - Cyber and Identity Support Threats",
   "OMFR - online Marketplace Fraud Risks",
-  "CCFD - Charity and Crowdfunding Description",
+  "CCFD - Charity and Crowdfunding Deception",
   "CRFT - Cryptocurrency Fraud and Threats",
   "CDST - Courier and delivery Scam Threats",
   "INTS - International Scam Scenarios",

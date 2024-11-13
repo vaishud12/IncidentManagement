@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'; // Ensure useState and useEffect are imported
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { Scatter } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2'; 
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend } from 'chart.js';
 import * as API from "../Endpoint/Endpoint";
 ChartJS.register(CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
@@ -15,7 +16,8 @@ const Cdst = ({ sectorName }) => {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [chartData, setChartData] = useState(null);
-    const incidentsPerPage = 3;
+    const incidentsPerPage = 2;
+    const [pieChartData, setPieChartData] = useState(null);
    
     // Calculate the indices for slicing the incidents array
     const indexOfLastIncident = currentPage * incidentsPerPage;
@@ -178,7 +180,29 @@ const fetchIncidentDatac = async (sectorName) => {
   }
 };
 
+const fetchSectorIncidentscategory = async () => {
+    try {
+      const response = await fetch(`${API.GET_INCIDENTSECTORCOUNT_CHART}?sectorName=${sectorName}`);
+      const data = await response.json();
 
+        // Prepare data for the pie chart
+        const categories = data.map(item => item.incidentcategory);
+        const counts = data.map(item => item.count);
+
+        setPieChartData({
+          labels: categories,
+          datasets: [{
+            data: counts,
+            backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#F1C40F', '#9B59B6'], // Pie slice colors
+            hoverBackgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#F1C40F', '#9B59B6']
+          }]
+        });
+      } catch (error) {
+        console.error('Error fetching sector incidents:', error);
+      }
+    };
+
+   
 
 
 
@@ -190,6 +214,7 @@ useEffect(() => {
     fetchIncidents();
     fetchIncidentCategories();
     fetchIncidentDatac();
+    fetchSectorIncidentscategory();
 }, [sectorName]);  // Effect will run when sectorName changes
 useEffect(() => {
     if (informationData) {
@@ -424,7 +449,13 @@ console.log('information data',informationData); // Log to check the structure o
     </table>
 
     {/* Incident Resolution Scatter Graph */}
-    <div className="mt-4">
+   
+</div>
+
+</div>
+
+        {/* Graph Section inside Notifications */}
+        <div className="mt-4">
         <h2 className="text-xl font-semibold mb-4 text-dark-blue">Incident Categories Resolved vs Unresolved</h2>
         <div className="w-full mx-auto" style={{ height: '500px', padding: '1px' }}>
             <Scatter
@@ -465,11 +496,6 @@ console.log('information data',informationData); // Log to check the structure o
             />
         </div>
     </div>
-</div>
-
-</div>
-
-        {/* Graph Section inside Notifications */}
         </div>
        
     

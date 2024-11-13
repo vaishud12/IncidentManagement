@@ -43,6 +43,7 @@ console.log(email);
     const [tags, setTags] = useState(initialState);
     const [query, setQuery] = useState('');
     const [remark, setRemark] = useState('');
+    const [loading, setLoading] = useState(false);  // State for loading
    
     
     const [photo, setPhoto] = useState(null);
@@ -186,7 +187,7 @@ console.log(email);
             alert("Please provide a value for each input field");
             return;
         }
-    
+        setLoading(true);
         try {
             // Fetch priority times from the server
             const priorityResponse = await axios.get(API.GET_PRIORITY_TIME);
@@ -654,7 +655,11 @@ const handlePhotoChange = (e) => {
   onChange={handleRemarkChange} 
 />
 
-                    <input type="submit" value={editItem? "Update" : "Save"} />
+<input 
+    type="submit" 
+    value={editItem ? (loading ? "Updating..." : "Update") : (loading ? "Saving..." : "Save")} 
+    disabled={loading} 
+/>
                     {emailSent && <div style={{ color: 'green', marginTop: '10px' }}>Email sent successfully!</div>}
                 </form>
                 <button onClick={handleGoBack}>Go Back</button>

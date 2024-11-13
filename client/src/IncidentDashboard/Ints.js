@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'; // Ensure useState and useEffect are imported
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { Scatter } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2'; 
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend } from 'chart.js';
 import * as API from "../Endpoint/Endpoint";
 ChartJS.register(CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
@@ -15,7 +16,8 @@ const Ints = ({ sectorName }) => {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [chartData, setChartData] = useState(null);
-    const incidentsPerPage = 3;
+    const incidentsPerPage = 2;
+    const [pieChartData, setPieChartData] = useState(null);
    
     // Calculate the indices for slicing the incidents array
     const indexOfLastIncident = currentPage * incidentsPerPage;
@@ -179,7 +181,29 @@ const fetchIncidentDatac = async (sectorName) => {
 };
 
 
+const fetchSectorIncidentscategory = async () => {
+    try {
+      const response = await fetch(`${API.GET_INCIDENTSECTORCOUNT_CHART}?sectorName=${sectorName}`);
+      const data = await response.json();
 
+        // Prepare data for the pie chart
+        const categories = data.map(item => item.incidentcategory);
+        const counts = data.map(item => item.count);
+
+        setPieChartData({
+          labels: categories,
+          datasets: [{
+            data: counts,
+            backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#F1C40F', '#9B59B6'], // Pie slice colors
+            hoverBackgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#F1C40F', '#9B59B6']
+          }]
+        });
+      } catch (error) {
+        console.error('Error fetching sector incidents:', error);
+      }
+    };
+
+   
 
 
 
@@ -190,6 +214,7 @@ useEffect(() => {
     fetchIncidents();
     fetchIncidentCategories();
     fetchIncidentDatac();
+     fetchSectorIncidentscategory();
 }, [sectorName]);  // Effect will run when sectorName changes
 useEffect(() => {
     if (informationData) {
@@ -253,80 +278,90 @@ console.log('information data',informationData); // Log to check the structure o
           </div>
       </div>
   
-      {/* Incident Categories and Selected Category Info */}
-      <div className="flex flex-col md:flex-row space-y-4 md:space-y-0">
-          {/* Incident Categories */}
-          <div className="w-full md:w-1/2">
-              <h2 className="text-2xl font-bold mb-4">Incident Categories for {sectorName}</h2>
-              {categories.length > 0 ? (
-                  <ul className="list-disc list-inside">
-                      {categories.map((category, index) => (
-                          <li
-                              key={index}
-                              className="py-2 px-4 border-b hover:bg-gray-100 cursor-pointer"
-                              onClick={() => handleCategoryClick(category)}
-                          >
-                              {category}
-                          </li>
-                      ))}
-                  </ul>
+     {/* Incident Categories and Selected Category Info */}
+<div className="flex flex-col md:flex-row space-y-4 md:space-y-0">
+  {/* Incident Categories */}
+  <div className="w-full md:w-1/2">
+    <h2 className="text-2xl font-bold mb-4">Incident Categories for {sectorName}</h2>
+    {categories.length > 0 ? (
+      <ul className="list-disc list-inside">
+        {categories.map((category, index) => (
+          <li
+            key={index}
+            className="py-2 px-4 border-b hover:bg-gray-100 cursor-pointer"
+            onClick={() => handleCategoryClick(category)}
+          >
+            {category}
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p className="text-center text-gray-500">No incident categories found for this sector.</p>
+    )}
+  </div>
+
+  {/* Selected Category Information and Graph */}
+  <div className="w-full md:w-1/2 pl-0 md:pl-4">
+    {/* Category Information */}
+    {selectedCategory && renderData && renderData.length > 0 && (
+      <div className="mb-6">
+        <h3 className="text-xl font-semibold mb-4">{selectedCategory} Information</h3>
+        <div className="bg-white rounded-lg shadow-md p-4 md:p-8 max-h-[400px] md:max-h-[780px] overflow-y-auto">
+          {renderData.map((data, index) => (
+            <div key={index} className="mb-6 border-b pb-4">
+              <p className="text-gray-700 font-bold">Incident Name: {data.incidentname || 'N/A'}</p>
+              <p className="text-gray-500">City/Country: {data.city || 'N/A'}</p>
+              {data.informationdescription?.image ? (
+                <img
+                  src={API.GET_IMAGE_URL(data.informationdescription.image)}
+                  alt={data.incidentname}
+                  className="w-full max-w-md my-4"
+                />
               ) : (
-                  <p className="text-center text-gray-500">No incident categories found for this sector.</p>
+                <p>No image available.</p>
               )}
-          </div>
-  
-          {/* Selected Category Information */}
-          {selectedCategory && renderData && renderData.length > 0 && (
-              <div className="w-full md:w-1/2 pl-0 md:pl-4">
-                  <h3 className="text-xl font-semibold mb-4">{selectedCategory} Information</h3>
-                  <div className="bg-white rounded-lg shadow-md p-4 md:p-8 max-h-[400px] md:max-h-[780px] overflow-y-auto">
-                      {renderData.map((data, index) => (
-                          <div key={index} className="mb-6 border-b pb-4">
-                              <p className="text-gray-700 font-bold">Incident Name: {data.incidentname || 'N/A'}</p>
-                              <p className="text-gray-500">City/Country: {data.city || 'N/A'}</p>
-                              {data.informationdescription?.image ? (
-                                  <img
-                                      src={API.GET_IMAGE_URL(data.informationdescription.image)}
-                                      alt={data.incidentname}
-                                      className="w-full max-w-md my-4"
-                                  />
-                              ) : (
-                                  <p>No image available.</p>
-                              )}
-                              {data.tagss && data.tagss.length > 0 ? (
-                                  <div className="my-4">
-                                      <span className="font-semibold">Tags: </span>
-                                      {data.tagss.join(', ')}
-                                  </div>
-                              ) : (
-                                  <p>No tags available.</p>
-                              )}
-                              <p>
-                                  <b>Information Description:</b>
-                                  {data.informationdescription?.content ? (
-                                      <div className="content-text">
-                                          <style>
-                                              {`
-                                                  .content-text a {
-                                                      color: blue;
-                                                      text-decoration: underline;
-                                                  }
-                                              `}
-                                          </style>
-                                          <div
-                                              dangerouslySetInnerHTML={{ __html: data.informationdescription.content }}
-                                          />
-                                      </div>
-                                  ) : (
-                                      <p>No content available.</p>
-                                  )}
-                              </p>
-                          </div>
-                      ))}
+              {data.tagss && data.tagss.length > 0 ? (
+                <div className="my-4">
+                  <span className="font-semibold">Tags: </span>
+                  {data.tagss.join(', ')}
+                </div>
+              ) : (
+                <p>No tags available.</p>
+              )}
+              <p>
+                <b>Information Description:</b>
+                {data.informationdescription?.content ? (
+                  <div className="content-text">
+                    <style>
+                      {`
+                        .content-text a {
+                          color: blue;
+                          text-decoration: underline;
+                        }
+                      `}
+                    </style>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: data.informationdescription.content }}
+                    />
                   </div>
-              </div>
-          )}
+                ) : (
+                  <p>No content available.</p>
+                )}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
+    )}
+
+    {/* Pie Chart */}
+    <div style={{ width: '100%', height: 'auto', margin: '0 auto' }}>
+      <h3 className="text-xl font-semibold mb-4">Incident Categories for {sectorName} Sector</h3>
+      <Pie data={pieChartData} />
+    </div>
+  </div>
+</div>
+
   
     {/* Incident Table and Notifications */}
 <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-8 p-4">
@@ -425,7 +460,13 @@ console.log('information data',informationData); // Log to check the structure o
     </table>
 
     {/* Incident Resolution Scatter Graph */}
-    <div className="mt-4">
+   
+</div>
+
+</div>
+
+        {/* Graph Section inside Notifications */}
+        <div className="mt-4">
         <h2 className="text-xl font-semibold mb-4 text-dark-blue">Incident Categories Resolved vs Unresolved</h2>
         <div className="w-full mx-auto" style={{ height: '500px', padding: '1px' }}>
             <Scatter
@@ -466,11 +507,6 @@ console.log('information data',informationData); // Log to check the structure o
             />
         </div>
     </div>
-</div>
-
-</div>
-
-        {/* Graph Section inside Notifications */}
         </div>
        
     
