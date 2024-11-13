@@ -70,8 +70,7 @@ const InformationMaster = () => {
     const filterData = (data) => {
         return data.filter(item => {
             const matchesSearch = searchQuery ? 
-                (item.incidentname && item.incidentname.toLowerCase().includes(searchQuery.toLowerCase())) ||
-                (item.informationdescription && item.informationdescription.toLowerCase().includes(searchQuery.toLowerCase())) 
+                (item.incidentname && item.incidentname.toLowerCase().includes(searchQuery.toLowerCase())) 
                 : true;
             return matchesSearch;
         });

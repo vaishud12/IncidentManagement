@@ -6,7 +6,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import logo from './Signup-Login/logo.jpeg'; 
 import * as API from "./Endpoint/Endpoint";
 import LanguageSwitcher from './components/LanguageSwitcher';
-
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -81,7 +81,9 @@ const Navbar = () => {
     <>
       <nav className="bg-blue-500 p-4 flex justify-between items-center fixed top-0 left-0 right-0" style={{ height: '50px', zIndex: 1000 }}>
         <div className="flex items-center">
-          <img src={logo} alt="Logo" className="h-10 w-26 mr-2" />
+        <Link to="/">
+    <img src={logo} alt="Logo" className="h-10 w-26 mr-2" />
+</Link>
         </div>
         
         <ul className="flex items-center space-x-4">
