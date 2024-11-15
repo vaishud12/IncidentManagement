@@ -50,7 +50,7 @@ const handleSubmit = async (e) => {
         <LanguageSwitcher />
       </div>
        
-      <div className="flex flex-col lg:flex-row md:flex-row sm:flex-row h-full lg:h-screen">
+      <div className="flex flex-col lg:flex-row md:flex-row flex-warp sm:flex-row h-full lg:h-screen">
   {/* Text and Image Section */}
   <div className="flex-1 bg-gray-200 p-6">
     <div className="flex flex-col lg:flex-row items-center lg:items-start lg:space-x-10">
@@ -174,7 +174,7 @@ const handleSubmit = async (e) => {
 </div>
 
 {/* Full-length Section */}
-<div className="w-full bg-gray-100 p-9">
+<div className="w-full flex-wrap bg-gray-100 p-12">
   <h2 className="text-xl font-semibold mb-4">{t("signup.mission")}</h2>
   <p className="mb-4">{t("signup.missiond")}</p>
 

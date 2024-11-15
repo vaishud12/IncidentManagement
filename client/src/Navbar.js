@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import React from 'react';
 import axios from 'axios';
 import ProfileModal from './components/ProfileModal';
-import { FaUserCircle } from 'react-icons/fa';
+import { FaUserCircle, FaChrome
+ } from 'react-icons/fa';
 import logo from './Signup-Login/logo.jpeg'; 
 import * as API from "./Endpoint/Endpoint";
 import LanguageSwitcher from './components/LanguageSwitcher';
@@ -87,11 +88,13 @@ const Navbar = () => {
         </div>
         
         <ul className="flex items-center space-x-4">
-        <li>
-        <a href="/Dashboard" className="text-white font-semibold hover:underline">
-               Dashboard
-              </a>
-          </li>
+        <li className="flex items-center">
+  <FaChrome className="text-white mr-2" />
+  <a href="/Dashboard" className="text-white font-semibold hover:underline">
+    About
+  </a>
+</li>
+
           {/* LanguageSwitcher component */}
           <li>
             <LanguageSwitcher />

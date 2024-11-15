@@ -64,7 +64,7 @@ function Login() {
 <div className="w-full flex justify-end p-3 bg-gray-100">
         <LanguageSwitcher />
       </div>
-<div className="flex flex-col lg:flex-row md:flex-row sm:flex-row h-full lg:h-screen">
+<div className="flex flex-col lg:flex-row flex-wrap h-full lg:h-screen">
         {/* Text and Image Section */}
         <div className="flex-1 bg-gray-200 p-6">
           <div className="flex flex-col lg:flex-row items-center lg:items-start lg:space-x-10">
@@ -103,12 +103,13 @@ function Login() {
                     </p>
                   </div>
           {/* Vision Section */}
-          <div className="mt-8 w-full">
-            <h2 className="text-xl font-semibold mb-4">{t("login.vision")}</h2>
-            <p className="mb-4">
-              {t("login.visiond")}
-            </p>
-          </div>
+          <div className="mt-8 w-full ">
+  <h2 className="text-xl font-semibold mb-4">{t("login.vision")}</h2>
+  <p className="mb-4">
+    {t("login.visiond")}
+  </p>
+</div>
+
         </div>
 
     <div className="flex-1 bg-gray-100 flex items-center justify-center">
@@ -169,16 +170,16 @@ function Login() {
     </div>
 
 {/* Full-length Section */}
-<div className="w-full bg-gray-100 p-9">
-        <h2 className="text-xl font-semibold mb-4">{t("login.mission")}</h2>
-        <p className="mb-4">
-          {t("login.missiond")}
-        </p>
+<div className="w-full flex-wrap bg-gray-100 p-12">
+  <h2 className="text-xl font-semibold mb-4">{t("login.mission")}</h2>
+  <p className="mb-4">
+    {t("login.missiond")}
+  </p>
+  <div className="flex justify-center mt-4">
+    <SocialIcon network="linkedin" url="https://www.linkedin.com/in/dr-prakash-sharma-330743a3/" />
+  </div>
+</div>
 
-        <div className="flex justify-center mt-4">
-          <SocialIcon network="linkedin" url="https://www.linkedin.com/in/dr-prakash-sharma-330743a3/" />
-        </div>
-      </div>
 </>
   );
 }

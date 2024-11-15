@@ -991,99 +991,101 @@ app.get("/citincident-api/informationmasterget/:informationmasterid", async (req
 });
 app.put("/citincident-api/informationmasterupdate/:informationmasterid", uploadingm.single('image'), (req, res) => {
     const { informationmasterid } = req.params;
-
+  
     // Access body fields
     const { 
-        sector, 
-        incidentcategory, 
-        incidentname,
-        city,
-        tagss, 
-        informationmastertype, 
-        informationdescription // This should contain text and url
+      sector, 
+      incidentcategory, 
+      incidentname, 
+      city, 
+      tagss, 
+      informationmastertype, 
+      informationdescription // This should contain content (HTML format) and image
     } = req.body;
-
+  
     // Parse the informationdescription string into an object
     let infoDescription = {};
     try {
-        infoDescription = JSON.parse(informationdescription || "{}");
+      infoDescription = JSON.parse(informationdescription || "{}");
     } catch (err) {
-        return res.status(400).json({ error: "Invalid JSON format for informationdescription" });
+      return res.status(400).json({ error: "Invalid JSON format for informationdescription" });
     }
-
-    // Access the uploaded image path
+  
+    // Access the HTML content directly
+    const content = infoDescription.content || ""; // Raw HTML content
+  
+    // If there's an image file, we store its path
     const imagePath = req.file ? req.file.filename : ""; // Adjust based on your storage solution
-
-    // Create the formatted informationdescription object with text, url, and imagePath
+  
+    // Create the formatted informationdescription object with HTML content and image
     const formattedDescription = {
-        text: infoDescription.text || "", // Ensure text is set to an empty string if undefined
-        url: infoDescription.url || [],   // Ensure url is an array, even if no URLs are provided
-        image: imagePath // Store the image path
+      content: content, // Raw HTML content, which may contain URLs within it
+      image: imagePath  // Store the image path if available
     };
-
-    // Debug: Log raw incoming tags
-    console.log('Raw tags received:', tagss);
-
+  
     // Ensure tags are properly formatted as a PostgreSQL array
-    // Check if tagss is a string; if so, split it into an array
     let tagssArray = Array.isArray(tagss) ? tagss : tagss.split(",");
-
-    // Trim whitespace around each tag
     tagssArray = tagssArray.map(tagi => tagi.trim());
-
-    // Convert tagss to a PostgreSQL-compatible array format
-    const formattedTags = `{${tagssArray.join(",")}}`;  // Use curly braces for PostgreSQL array format
-    console.log('Formatted tags for database:', formattedTags);
-
+    const formattedTags = `{${tagssArray.join(",")}}`;  // PostgreSQL array format
+  
     // Log the received data for debugging
-    console.log("Update Request Data:", { sector, incidentcategory, incidentname, city, formattedTags, informationmastertype, formattedDescription });
-
-    // SQL Query for updating record
+    console.log("Put Request Data:", { 
+      sector, 
+      incidentcategory, 
+      incidentname, 
+      city, 
+      formattedTags, 
+      informationmastertype, 
+      formattedDescription 
+    });
+  
+    // SQL Query for updating the record
     const sqlUpdate = `
-        UPDATE informationmaster 
-        SET 
-            sector = $1, 
-            incidentcategory = $2, 
-            incidentname = $3, 
-            city  = $4,
-            tagss = $5,
-            informationmastertype = $6, 
-            informationdescription = $7 
-        WHERE 
-            informationmasterid = $8
+      UPDATE informationmaster 
+      SET 
+        sector = $1, 
+        incidentcategory = $2, 
+        incidentname = $3, 
+        city = $4,
+        tagss = $5,
+        informationmastertype = $6, 
+        informationdescription = $7 
+      WHERE 
+        informationmasterid = $8
     `;
-
+  
     const values = [
-        sector,
-        incidentcategory,
-        incidentname,
-        city,
-        formattedTags, // Use formattedTags instead of tagss
-        informationmastertype,
-        JSON.stringify(formattedDescription), // Ensure we store the object as a JSON string
-        informationmasterid // Include the ID for the WHERE clause
+      sector,
+      incidentcategory,
+      incidentname,
+      city,
+      formattedTags, // Tags formatted as a PostgreSQL array
+      informationmastertype,
+      JSON.stringify(formattedDescription), // Store as JSON string
+      informationmasterid // Include the ID for the WHERE clause
     ];
-
+  
     // Log the SQL command and values for debugging
     console.log("SQL Update Command:", sqlUpdate);
     console.log("Values to Update:", values);
-
+  
     // Execute the database query
     db.query(sqlUpdate, values, (error, result) => {
-        if (error) {
-            console.error("Error updating informationmaster:", error);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-
-        // Check if the record was found and updated
-        if (result.rowCount === 0) {
-            return res.status(404).json({ error: "Information master not found" });
-        }
-
-        // Respond with success
-        res.status(200).json({ message: "Information master updated successfully" });
+      if (error) {
+        console.error("Error updating informationmaster:", error);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+  
+      // Check if the record was found and updated
+      if (result.rowCount === 0) {
+        return res.status(404).json({ error: "Information master not found" });
+      }
+  
+      // Respond with success
+      res.status(200).json({ message: "Information master updated successfully" });
     });
-});
+  });
+  
 
 // Nodemailer transporter setup
 // app.post("/api/send-emailfour/ids", async (req, res) => {

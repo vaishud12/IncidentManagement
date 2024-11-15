@@ -14,7 +14,7 @@ const initialState = {
     city:'',
     tagss: [],
     informationmastertype: '',
-    informationdescription: {},
+    informationdescription: { htmlContent: "" },
 };
 
 const InformationMasterAedit = ({ visible, onClose, editItem, loadData }) => {
@@ -27,7 +27,7 @@ const InformationMasterAedit = ({ visible, onClose, editItem, loadData }) => {
     const [sectors, setSectors] = useState([]);
     const [incidentCategories, setIncidentCategories] = useState([]);
     const [incidentNames, setIncidentNames] = useState([]);
-    const quillRef = useRef(); // Create a ref to the PlainTextQuillEditor
+    // Ref for the PlainTextQuillEditor component
     const [tags, setTags] = useState(initialState);
 
     useEffect(() => {
@@ -60,7 +60,6 @@ const InformationMasterAedit = ({ visible, onClose, editItem, loadData }) => {
 
         fetchData();
     }, [sector, incidentcategory, sectors.length]);
-
     useEffect(() => {
         if (editItem) {
             axios.get(API.GET_SPECIFIC_INFORMATION_MASTER(editItem))
@@ -68,26 +67,27 @@ const InformationMasterAedit = ({ visible, onClose, editItem, loadData }) => {
                     const data = resp.data[0];
                     setState({
                         ...data,
-                        informationdescription: data.informationdescription || {},
+                        informationdescription: {
+                            htmlContent: data.informationdescription?.content || "", // Extract HTML content
+                        }, // Ensure default value for HTML content
                     });
+
+                    // Handle pre-filling tags if available
                     if (data.tagss && Array.isArray(data.tagss)) {
-                        const auditeesTags = data.tagss.map((tag, index) => ({
-                            id: tag, // Ideally use a unique ID
+                        const auditeesTags = data.tagss.map((tag) => ({
+                            id: tag,
                             text: tag.trim(),
                         }));
-    
-                        setTags({ tagss: auditeesTags }); // Ensure you're setting the tags properly
-                    }
-                    if (quillRef.current) {
-                        // Set editor content using the method exposed via ref
-                        quillRef.current.setEditorContents(data.informationdescription.text || ""); 
+                        setTags({ tagss: auditeesTags });
                     }
                 })
                 .catch(error => {
-                    toast.error("Failed to fetch incident category data.");
+                    console.error("Failed to fetch information data", error);
                 });
         }
     }, [editItem]);
+   
+
     
     const handleDelete = (i) => {
         const newTags = tags.tagss.filter((tag, index) => index !== i);
@@ -123,10 +123,10 @@ const InformationMasterAedit = ({ visible, onClose, editItem, loadData }) => {
 
     const handleRemarkChange = (informationDescription) => {
         setState(prevState => ({
-            ...prevState,
-            informationdescription: informationDescription,
+          ...prevState,
+          informationdescription: informationDescription,
         }));
-    };
+      };
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent default form submission
@@ -304,9 +304,9 @@ const InformationMasterAedit = ({ visible, onClose, editItem, loadData }) => {
                         <option value="undiscoveredinnovation">Undiscovered Innovation</option>
                     </select>
                     <label htmlFor="informationdescription">Information Description</label>
-                    <PlainTextQuillEditor 
-                         ref={quillRef}
-                        onChange={handleRemarkChange} 
+                    <PlainTextQuillEditor
+                        value={informationdescription.htmlContent}
+                        onChange={handleRemarkChange}
                     />
                    <div>
                         <input

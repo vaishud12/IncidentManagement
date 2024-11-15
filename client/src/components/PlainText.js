@@ -4,8 +4,12 @@ import 'react-quill/dist/quill.snow.css';
 
 const PlainText = ({ onChange, value }) => {
   const handleRemarkChange = (content) => {
-    // Remove HTML tags using regex, leaving only plain text
-    const plainText = content.replace(/<\/?[^>]+(>|$)/g, "");
+    onChange(content); // Update state without removing HTML on every keystroke
+  };
+
+  const handleBlur = () => {
+    // Remove HTML tags when focus is lost, keeping only plain text
+    const plainText = value.replace(/<\/?[^>]+(>|$)/g, "");
     onChange(plainText);
   };
 
@@ -13,6 +17,7 @@ const PlainText = ({ onChange, value }) => {
     <ReactQuill
       value={value}
       onChange={handleRemarkChange}
+      onBlur={handleBlur}
       theme="snow"
       placeholder="Add a remark..."
       modules={{

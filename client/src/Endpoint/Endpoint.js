@@ -1,7 +1,7 @@
 const BASE_URL = "http://localhost:5017/citincident-api/";
-// const BASE_URL = "https://citincidentmgmt.passionit.com/citincident-api/citincident-api/";
+// const BASE_URL = "https://imcit.passionit.com/citincident-api/citincident-api/";
 const BASE_IMAGE_URL = "http://localhost:5017/citincident-api/uploads";
-//  const BASE_IMAGE_URL = "https://citincidentmgmt.passionit.com/citincident-api/citincident-api/uploads"
+//  const BASE_IMAGE_URL = "https://imcit.passionit.com/citincident-api/citincident-api/uploads"
 export const LOGIN = `${BASE_URL}login`;
 export const SIGNUP = `${BASE_URL}signup`;
 
@@ -41,8 +41,6 @@ export const DELETE_INFORMATION_MASTER = (informationmasterid) =>
   `${BASE_URL}informationmasterdelete/${informationmasterid}`;
 
 export const GET_SECTOR_CATEGORY_DATA = `${BASE_URL}information`;
-
-
 
 
 /********************INCIDENT************************** */

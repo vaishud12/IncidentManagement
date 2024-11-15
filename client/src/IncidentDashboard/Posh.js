@@ -18,7 +18,17 @@ const Posh = ({ sectorName }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [chartData, setChartData] = useState(null);
     const incidentsPerPage = 2;
-    const [pieChartData, setPieChartData] = useState(null);
+    const [pieChartData, setPieChartData] = useState({
+        labels: [],
+        datasets: [
+          {
+            data: [],
+            backgroundColor: [],
+            hoverBackgroundColor: []
+          }
+        ]
+      });
+      const [hasData, setHasData] = useState(false); 
     // Calculate the indices for slicing the incidents array
     const indexOfLastIncident = currentPage * incidentsPerPage;
     const indexOfFirstIncident = indexOfLastIncident - incidentsPerPage;
@@ -181,30 +191,36 @@ const fetchIncidentDatac = async (sectorName) => {
 };
 
 
+
 const fetchSectorIncidentscategory = async () => {
     try {
       const response = await fetch(`${API.GET_INCIDENTSECTORCOUNT_CHART}?sectorName=${sectorName}`);
       const data = await response.json();
 
-        // Prepare data for the pie chart
+      if (data && data.length > 0) {
+        // Prepare data for the pie chart if incidents exist
         const categories = data.map(item => item.incidentcategory);
         const counts = data.map(item => item.count);
 
         setPieChartData({
           labels: categories,
-          datasets: [{
-            data: counts,
-            backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#F1C40F', '#9B59B6'], // Pie slice colors
-            hoverBackgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#F1C40F', '#9B59B6']
-          }]
+          datasets: [
+            {
+              data: counts,
+              backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#F1C40F', '#9B59B6'],
+              hoverBackgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#F1C40F', '#9B59B6']
+            }
+          ]
         });
-      } catch (error) {
-        console.error('Error fetching sector incidents:', error);
+        setHasData(true); // Indicate that there's data to display
+      } else {
+        setHasData(false); // No data found
       }
-    };
-
-   
-
+    } catch (error) {
+      console.error('Error fetching sector incidents:', error);
+      setHasData(false); // In case of error, set hasData to false
+    }
+  };
 
 
 // useEffect to fetch data when the component mounts or sectorName changes
@@ -353,10 +369,14 @@ console.log('information data',informationData); // Log to check the structure o
       </div>
     )}
 
-    {/* Pie Chart */}
-    <div style={{ width: '100%', height: 'auto', margin: '0 auto' }}>
+   {/* Pie Chart */}
+ <div style={{ width: '60%', height: 'auto', margin: '0 auto' }}>
       <h3 className="text-xl font-semibold mb-4">Incident Categories for {sectorName} Sector</h3>
-      <Pie data={pieChartData} />
+      {hasData ? (
+        <Pie data={pieChartData} />
+      ) : (
+        <p>No incident found for this sector.</p>
+      )}
     </div>
   </div>
 </div>
